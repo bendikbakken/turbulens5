@@ -25,6 +25,13 @@ def main():
     print("c)")
     print(f"The kurtosis for the boundary layer is k = {kurtosis_bl}.")
     print(f"The kurtosis for the grid is k = {kurtosis_grid}.")
+
+
+    prob3.plot_pdf(u_bl, "BL PDF", "x", "y")
+    prob3.plot_pdf(u_grid, "Grid PDF", "x", "y")
+    prob3.plt.show()
+
+
     return
 
 
