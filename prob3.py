@@ -20,7 +20,7 @@ def calc_skewness(u): return stats.skew(u)
 def calc_kurtosis(u): return stats.kurtosis(u, fisher=False)
 
 
-def plot_pdf(u, title, xlabel, ylabel):
+def plot_pdf(u, title, xlabel, ylabel, logplot=False):
     u_mean = np.mean(u)
     u_fluc = u - u_mean
     n_bins = 50
@@ -34,7 +34,10 @@ def plot_pdf(u, title, xlabel, ylabel):
 
     mu = np.mean(u_fluc)
     sigma = np.std(u_fluc)
-    x = np.linspace(mu - 5 * sigma, mu + 5 * sigma, 100)
-    plt.plot(x, stats.norm.pdf(x, mu, sigma), linewidth=5)
+    x = np.linspace(mu - 4 * sigma, mu + 4 * sigma, 100)
+    if logplot:
+        plt.semilogy(x, stats.norm.pdf(x, mu, sigma), linewidth=5)
+    else:
+        plt.plot(x, stats.norm.pdf(x, mu, sigma), linewidth=5)
 
     return None
