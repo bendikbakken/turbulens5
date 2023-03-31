@@ -12,11 +12,13 @@ def load_data():
 def calc_turb_intensity(u):
     u_mean = np.average(u)
     u_fluc = u - u_mean
-    turb_intensity = np.std(u_fluc)/u_mean
+    turb_intensity = np.std(u_fluc) / u_mean
     return turb_intensity
 
 
 def calc_skewness(u): return stats.skew(u)
+
+
 def calc_kurtosis(u): return stats.kurtosis(u, fisher=False)
 
 
@@ -25,19 +27,19 @@ def plot_pdf(u, title, xlabel, ylabel, logplot=False):
     u_fluc = u - u_mean
     n_bins = 50
     # Creating histogram
-    plt.subplots(1, 1, figsize=(10, 7), tight_layout=True)
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    ax1.hist(u_fluc, bins=n_bins, density=True)
+    ax2.hist(u_fluc, bins=n_bins, density=True)
+    fig.suptitle(title)
+    ax1.set_xlabel(xlabel)
+    ax1.set_ylabel(ylabel)
 
-    plt.hist(u_fluc, bins=n_bins, density=True)
-    plt.title(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-
+    # Comparing to normal distribution
     mu = np.mean(u_fluc)
     sigma = np.std(u_fluc)
     x = np.linspace(mu - 4 * sigma, mu + 4 * sigma, 100)
-    if logplot:
-        plt.semilogy(x, stats.norm.pdf(x, mu, sigma), linewidth=5)
-    else:
-        plt.plot(x, stats.norm.pdf(x, mu, sigma), linewidth=5)
+
+    ax1.plot(x, stats.norm.pdf(x, mu, sigma), linewidth=3, color='k')
+    ax2.semilogy(x, stats.norm.pdf(x, mu, sigma), linewidth=3, color='k')
 
     return None
